@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: "{{.Release.Name}}-{{.Values.Name}}"
+    labels:
+        app.kubernetes.io/managed-by: {{.Release.Service | quote }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion  }}
+        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        values: {{.Values.Name}}
+spec:
+    restartPolicy: {{default "Never" .Values.restartPolicy}}
+    containers:
+      - name: waiter
+        image: "alpine:{{ .Chart.AppVersion }}"
+        command: ["/bin/sleep", "9000"]
